@@ -107,4 +107,21 @@ input:valid ~ label {
   main {
     flex-direction: column;
   }
+
+  .login-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  .login-btn {
+    width: 20px;
+  }
+
+  .kv-logo {
+    width: 50px;
+  }
+
+  .input {
+    width: 100px;
+  }
 }
