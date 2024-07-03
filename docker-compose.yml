@@ -1,0 +1,19 @@
+services:
+  ui:
+    image: my-nginx
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+  db:
+    image: postgres:latest
+    container_name: kv-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./volumes/pg_data:/var/lib/postgresql/data
