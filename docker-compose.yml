@@ -9,10 +9,8 @@ services:
   db:
     image: postgres:latest
     container_name: kv-postgres
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+    env_file:
+      - ./api/.env
     ports:
       - "5433:5432"
     volumes:

@@ -1,0 +1,15 @@
+FROM node:20-alpine
+
+WORKDIR /api
+
+COPY . .
+
+# RUN apk install -y curl
+
+RUN curl -fsSL https://bun.sh/install | bash
+
+RUN bun install
+
+EXPOSE 3000
+
+CMD [ "bun", "dev" ]
