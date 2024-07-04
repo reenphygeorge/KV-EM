@@ -1,11 +1,15 @@
 import express from "express";
-import { employeeRouter } from "./routes/employee";
-import { logger } from "./middlewares/logger";
-import dataSource from "./data/data-source";
+import dotenv from "dotenv";
+import { loggerMiddleware } from "./middlewares/logger.middleware";
+import { dataSource } from "./db/data-source.db";
+import employeeRouter from "./routes/employee.route";
 
 const app = express();
+dotenv.config();
+
 app.use(express.json());
-app.use(logger);
+
+app.use(loggerMiddleware);
 
 app.get("/", (_, res) => {
   try {

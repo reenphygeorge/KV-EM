@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request } from "express";
 import { writeFile } from "fs";
 
-const logger = (req: Request, res: Response, next: NextFunction) => {
+const loggerMiddleware = (req: Request, _, next: NextFunction) => {
   const log = `[${new Date().toString()}] ${req.method} ${req.url}\n`;
   writeFile(".logs", log, { flag: "a+" }, (err) => {
     if (err) {
@@ -20,4 +20,4 @@ const logger = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { logger };
+export { loggerMiddleware };

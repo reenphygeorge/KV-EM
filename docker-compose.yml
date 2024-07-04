@@ -1,14 +1,22 @@
 services:
   ui:
-    image: my-nginx
+    image: kv-ui
     build:
       context: ./ui
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "8080:80"
+  api:
+    image: kv-api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
   db:
     image: postgres:latest
-    container_name: kv-postgres
     env_file:
       - ./api/.env
     ports:

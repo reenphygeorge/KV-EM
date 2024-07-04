@@ -4,12 +4,10 @@ WORKDIR /api
 
 COPY . .
 
-# RUN apk install -y curl
+RUN npm install -g pnpm 
 
-RUN curl -fsSL https://bun.sh/install | bash
-
-RUN bun install
+RUN pnpm install
 
 EXPOSE 3000
 
-CMD [ "bun", "dev" ]
+CMD [ "pnpm", "start" ]
