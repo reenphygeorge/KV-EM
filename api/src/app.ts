@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { loggerMiddleware } from "./middlewares/logger.middleware";
 import { dataSource } from "./db/data-source.db";
 import employeeRouter from "./routes/employee.route";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 dotenv.config();
@@ -20,6 +21,8 @@ app.get("/", (_, res) => {
 });
 
 app.use("/employee", employeeRouter);
+
+app.use(errorHandler);
 
 (async () => {
   try {

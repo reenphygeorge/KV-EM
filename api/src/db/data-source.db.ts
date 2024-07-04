@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
-import { Employee } from "../entity/employee.entity";
+import Employee from "../entity/employee.entity";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,7 +17,8 @@ const dataSource = new DataSource({
   synchronize: false,
   logging: true,
   namingStrategy: new SnakeNamingStrategy(),
-  entities: [Employee],
+  entities: ["dist/entity/*.js"],
+  migrations: ["dist/db/migrations/*.js"],
 });
 
 export { dataSource };

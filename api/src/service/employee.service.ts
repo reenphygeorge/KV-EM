@@ -1,11 +1,12 @@
-import { Employee } from "../entity/employee.entity";
+import Address from "../entity/address.entity";
+import Employee from "../entity/employee.entity";
 import EmployeeRepository from "../repository/employee.repository";
 
 export default class EmployeeService {
-  private employeeRepository: EmployeeRepository;
+  // private employeeRepository: EmployeeRepository;
 
-  constructor(employeeRepository: EmployeeRepository) {
-    this.employeeRepository = employeeRepository;
+  constructor(private employeeRepository: EmployeeRepository) {
+    // this.employeeRepository = employeeRepository;
   }
 
   public getAllEmployees = async () => this.employeeRepository.find();
@@ -13,8 +14,21 @@ export default class EmployeeService {
   public getEmployeeById = async (id: number) =>
     this.employeeRepository.findOneBy({ id });
 
-  public createNewEmployee = async (newEmployee: Employee) =>
-    this.employeeRepository.save(newEmployee);
+  public createNewEmployee = async (
+    name: string,
+    email: string,
+    line1: string,
+    pincode: string
+  ) => {
+    const newEmployee = new Employee();
+    const newAddress = new Address();
+    newEmployee.name = name;
+    newEmployee.email = email;
+    newAddress.line1 = line1;
+    newAddress.pincode = pincode;
+    newEmployee.address = newAddress;
+    return this.employeeRepository.save(newEmployee);
+  };
 
   public updateEmployee = async (id: number, employee: Partial<Employee>) => {
     const employeeData = this.getEmployeeById(id);

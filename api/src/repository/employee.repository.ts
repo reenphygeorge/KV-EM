@@ -1,17 +1,18 @@
 import { Repository } from "typeorm";
-import { Employee } from "../entity/employee.entity";
+import Employee from "../entity/employee.entity";
 
 export default class EmployeeRepository {
-  private employeeRepository: Repository<Employee>;
-
-  constructor(employeeRepository: Repository<Employee>) {
+  constructor(private employeeRepository: Repository<Employee>) {
     this.employeeRepository = employeeRepository;
   }
 
   find = async () => await this.employeeRepository.find();
 
   findOneBy = async (filter: Partial<Employee>) =>
-    await this.employeeRepository.findOne({ where: filter });
+    await this.employeeRepository.findOne({
+      where: filter,
+      relations: { address: true },
+    });
 
   save = async (newEmployee: Employee) =>
     await this.employeeRepository.save(newEmployee);
