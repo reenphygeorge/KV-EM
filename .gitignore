@@ -3,3 +3,5 @@ dist/
 volumes/
 .logs
 .err.logs
+coverage
+.env

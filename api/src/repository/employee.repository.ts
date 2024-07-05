@@ -3,15 +3,18 @@ import Employee from "../entity/employee.entity";
 
 export default class EmployeeRepository {
   constructor(private employeeRepository: Repository<Employee>) {
-    this.employeeRepository = employeeRepository;
+    // this.employeeRepository = employeeRepository;
   }
 
-  find = async () => await this.employeeRepository.find();
+  find = async () =>
+    await this.employeeRepository.find({
+      relations: { address: true },
+    });
 
-  findOneBy = async (filter: Partial<Employee>) =>
+  findOneBy = async (filter: Partial<Employee>, relations?: string[]) =>
     await this.employeeRepository.findOne({
       where: filter,
-      relations: { address: true },
+      relations,
     });
 
   save = async (newEmployee: Employee) =>

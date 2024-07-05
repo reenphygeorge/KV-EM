@@ -1,7 +1,9 @@
 export default class HttpException extends Error {
   public status: number;
-  constructor(status: number, message: string) {
+  public errors: string[];
+  constructor(status: number, message: string, errors?: string[]) {
     super(message);
     this.status = status;
+    if (errors) this.errors = errors;
   }
 }
