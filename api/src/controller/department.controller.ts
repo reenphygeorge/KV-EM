@@ -7,6 +7,7 @@ import { Role } from "../utils/role.enum";
 import { plainToInstance } from "class-transformer";
 import {
   CreateDepartmentDto,
+  DepartmentResponseDto,
   UpdateDepartmentDto,
 } from "../dto/department.dto";
 import { validate } from "class-validator";
@@ -40,7 +41,7 @@ export default class DepartmentController {
       if (!department) {
         throw new HttpException(404, "Department not found");
       }
-      res.json(department);
+      res.json(plainToInstance(DepartmentResponseDto, department));
     } catch (error) {
       next(error);
     }
@@ -66,6 +67,8 @@ export default class DepartmentController {
       const departmentData = await this.departmentService.createNewDepartment(
         departmentDto.name
       );
+      console.log(departmentData);
+
       res.status(201).json({
         success: true,
         message: "Department Created!",

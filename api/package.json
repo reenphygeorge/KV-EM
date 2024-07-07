@@ -6,11 +6,11 @@
     "test": "rm -rf dist/ && jest",
     "test:coverage": "jest --coverage",
     "build": "rm -rf dist/ && tsc",
-    "start": "pnpm run build && node dist/src/app.js",
-    "migration:create": "pnpm build && pnpm typeorm migration:create",
-    "migration:generate": "pnpm build && pnpm typeorm migration:generate -d dist/src/db/data-source.db.js",
-    "migration:run": "pnpm build && pnpm typeorm migration:run -d dist/src/db/data-source.db.js",
-    "migration:revert": "pnpm build && pnpm typeorm migration:revert -d dist/src/db/data-source.db.js"
+    "start": "npm run build && node dist/src/app.js",
+    "migration:create": "npm run build && npm run typeorm migration:create",
+    "migration:generate": "npm run build && npm run typeorm migration:generate -d dist/src/db/data-source.db.js",
+    "migration:run": "npm run build && npm run typeorm migration:run -d dist/src/db/data-source.db.js",
+    "migration:revert": "npm run build && npm run typeorm migration:revert -d dist/src/db/data-source.db.js"
   },
   "keywords": [],
   "author": "",

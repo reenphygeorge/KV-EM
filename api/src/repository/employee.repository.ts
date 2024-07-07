@@ -21,7 +21,7 @@ export default class EmployeeRepository {
     await this.employeeRepository.save(newEmployee);
 
   update = async (id: number, employee: Partial<Employee>) =>
-    // await this.employeeRepository.save({id,...employee});
+    // await this.employeeRepository.save({ id, ...employee });
     await this.employeeRepository.update({ id }, employee);
 
   remove = async (employee: Employee) =>
