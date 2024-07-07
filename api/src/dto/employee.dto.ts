@@ -12,6 +12,8 @@ import Address from "../entity/address.entity";
 import { CreateAddressDto, UpdateAddressDto } from "./address.dto";
 import { Exclude, Type } from "class-transformer";
 import { Role } from "../utils/role.enum";
+import Department from "../entity/department.entity";
+import { CreateDepartmentDto } from "./department.dto";
 
 export class CreateEmployeeDto {
   @IsString()
@@ -30,6 +32,10 @@ export class CreateEmployeeDto {
   @ValidateNested()
   @Type(() => CreateAddressDto)
   address: Address;
+
+  @ValidateNested()
+  @Type(() => CreateDepartmentDto)
+  department: Department;
 
   @IsString()
   @IsNotEmpty()

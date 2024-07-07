@@ -6,16 +6,22 @@ import EmployeeRepository from "../repository/employee.repository";
 import { Role } from "../utils/role.enum";
 import JwtPayload from "../utils/jwtPayload";
 import { sign } from "jsonwebtoken";
+import Department from "../entity/department.entity";
+import DepartmentRepository from "../repository/department.repository";
 
 export default class EmployeeService {
-  constructor(private employeeRepository: EmployeeRepository) {
+  constructor(
+    private employeeRepository: EmployeeRepository,
+    private departmentRepository: DepartmentRepository
+  ) {
     this.employeeRepository = employeeRepository;
+    this.departmentRepository = departmentRepository;
   }
 
   public getAllEmployees = async () => this.employeeRepository.find();
 
   public getEmployeeById = async (id: number) =>
-    this.employeeRepository.findOneBy({ id }, ["address"]);
+    this.employeeRepository.findOneBy({ id }, ["address", "department"]);
 
   public createNewEmployee = async (
     name: string,
@@ -23,18 +29,23 @@ export default class EmployeeService {
     age: number,
     address: Address,
     password: string,
-    role: Role
+    role: Role,
+    department: Department
   ) => {
+    const departmentData = await this.departmentRepository.findOneBy({
+      name: department.name,
+    });
+    if (!departmentData) {
+      throw new HttpException(404, "Department Not Found");
+    }
     const newEmployee = new Employee();
-    const newAddress = new Address();
     newEmployee.name = name;
     newEmployee.email = email;
     newEmployee.age = age;
-    newAddress.line1 = address.line1;
-    newAddress.pincode = address.pincode;
-    newEmployee.address = newAddress;
+    newEmployee.address = address;
     newEmployee.password = await hash(password, 10);
     newEmployee.role = role;
+    newEmployee.department = departmentData;
     return await this.employeeRepository.save(newEmployee);
   };
 

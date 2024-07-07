@@ -4,6 +4,7 @@ import { loggerMiddleware } from "./middlewares/logger.middleware";
 import { dataSource } from "./db/data-source.db";
 import employeeRouter from "./routes/employee.route";
 import { errorHandler } from "./middlewares/errorHandler";
+import departmentRouter from "./routes/department.route";
 
 const app = express();
 dotenv.config();
@@ -21,6 +22,8 @@ app.get("/", (_, res) => {
 });
 
 app.use("/employee", employeeRouter);
+
+app.use("/department", departmentRouter);
 
 app.use(errorHandler);
 

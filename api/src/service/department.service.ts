@@ -10,7 +10,7 @@ export class DepartmentService {
   public getAllDepartments = async () => this.departmentRepository.find();
 
   public getDepartmentById = async (id: number) =>
-    this.departmentRepository.findOneBy({ id });
+    this.departmentRepository.findOneBy({ id }, ["employee"]);
 
   public createNewDepartment = async (name: string) => {
     const newDepartment = new Department();
@@ -33,6 +33,9 @@ export class DepartmentService {
     const departmentData = await this.getDepartmentById(id);
     if (!departmentData) {
       throw new HttpException(404, "Department Not Found");
+    }
+    if (departmentData.employee.length) {
+      throw new HttpException(403, "Department has employees");
     }
     this.departmentRepository.remove(departmentData);
   };

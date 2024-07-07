@@ -68,7 +68,8 @@ export default class EmployeeController {
         employeeDto.age,
         employeeDto.address,
         employeeDto.password,
-        employeeDto.role
+        employeeDto.role,
+        employeeDto.department
       );
       res.status(201).json({
         success: true,

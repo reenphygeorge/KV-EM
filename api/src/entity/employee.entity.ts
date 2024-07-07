@@ -27,6 +27,6 @@ export default class Employee extends AbstractEntity {
   @Column({ nullable: true })
   role: Role;
 
-  @ManyToOne(() => Department, ({ employee }) => employee)
+  @ManyToOne(() => Department, (department) => department.employee)
   department: Department;
 }

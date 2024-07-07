@@ -8,9 +8,9 @@
     "build": "rm -rf dist/ && tsc",
     "start": "pnpm run build && node dist/src/app.js",
     "migration:create": "pnpm build && pnpm typeorm migration:create",
-    "migration:generate": "pnpm build && pnpm typeorm migration:generate -d dist/db/data-source.db.js",
-    "migration:run": "pnpm build && pnpm typeorm migration:run -d dist/db/data-source.db.js",
-    "migration:revert": "pnpm build && pnpm typeorm migration:revert -d dist/db/data-source.db.js"
+    "migration:generate": "pnpm build && pnpm typeorm migration:generate -d dist/src/db/data-source.db.js",
+    "migration:run": "pnpm build && pnpm typeorm migration:run -d dist/src/db/data-source.db.js",
+    "migration:revert": "pnpm build && pnpm typeorm migration:revert -d dist/src/db/data-source.db.js"
   },
   "keywords": [],
   "author": "",
