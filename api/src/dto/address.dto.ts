@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateAddressDto {
   @IsString()
@@ -12,10 +12,10 @@ export class CreateAddressDto {
 
 export class UpdateAddressDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   line1: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   pincode: string;
 }

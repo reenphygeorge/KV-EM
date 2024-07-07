@@ -35,8 +35,7 @@ export default class EmployeeService {
     newEmployee.address = newAddress;
     newEmployee.password = await hash(password, 10);
     newEmployee.role = role;
-    const response = await this.employeeRepository.save(newEmployee);
-    (await response).password;
+    return await this.employeeRepository.save(newEmployee);
   };
 
   public updateEmployee = async (id: number, employee: Partial<Employee>) => {
@@ -44,7 +43,7 @@ export default class EmployeeService {
     if (!employeeData) {
       throw new HttpException(404, "Employee Not Found");
     }
-    this.employeeRepository.update(id, employee);
+    await this.employeeRepository.update(id, employee);
   };
 
   public deleteEmployee = async (id: number) => {
@@ -52,7 +51,7 @@ export default class EmployeeService {
     if (!employeeData) {
       throw new HttpException(404, "Employee Not Found");
     }
-    this.employeeRepository.delete(id);
+    this.employeeRepository.remove(employeeData);
   };
 
   public loginEmployee = async (email: string, password: string) => {
@@ -67,7 +66,9 @@ export default class EmployeeService {
         email: employee.email,
         role: employee.role,
       };
-      const token = sign(payload, "jwt_string", { expiresIn: "1h" });
+      const token = sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.TOKEN_EXPIRY,
+      });
       return token;
     } else {
       throw new HttpException(403, "Wrong Credentials");

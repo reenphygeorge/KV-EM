@@ -4,12 +4,13 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator";
 import Address from "../entity/address.entity";
 import { CreateAddressDto, UpdateAddressDto } from "./address.dto";
-import { Type } from "class-transformer";
+import { Exclude, Type } from "class-transformer";
 import { Role } from "../utils/role.enum";
 
 export class CreateEmployeeDto {
@@ -38,6 +39,11 @@ export class CreateEmployeeDto {
   role: Role;
 }
 
+export class EmployeeResponseDto extends CreateEmployeeDto {
+  @Exclude()
+  password: string;
+}
+
 export class LoginEmployeeDto {
   @IsEmail()
   @IsString()
@@ -50,18 +56,23 @@ export class LoginEmployeeDto {
 }
 
 export class UpdateEmployeeDto {
+  @IsNumber()
+  id: number;
+
   @IsString()
+  @IsOptional()
   name: string;
 
   @IsEmail()
-  @IsString()
+  @IsOptional()
   email: string;
 
   @IsNumber()
+  @IsOptional()
   age: number;
 
   @ValidateNested()
-  @IsEmpty()
+  @IsOptional()
   @Type(() => UpdateAddressDto)
   address: Address;
 }

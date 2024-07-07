@@ -3,7 +3,7 @@ import Employee from "../entity/employee.entity";
 
 export default class EmployeeRepository {
   constructor(private employeeRepository: Repository<Employee>) {
-    // this.employeeRepository = employeeRepository;
+    this.employeeRepository = employeeRepository;
   }
 
   find = async () =>
@@ -21,7 +21,9 @@ export default class EmployeeRepository {
     await this.employeeRepository.save(newEmployee);
 
   update = async (id: number, employee: Partial<Employee>) =>
+    // await this.employeeRepository.save({id,...employee});
     await this.employeeRepository.update({ id }, employee);
 
-  delete = async (id: number) => await this.employeeRepository.softDelete(id);
+  remove = async (employee: Employee) =>
+    await this.employeeRepository.softRemove(employee);
 }

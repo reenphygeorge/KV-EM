@@ -1,16 +1,16 @@
-import { NextFunction, Response } from "express";
+import { NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import JwtPayload from "../utils/jwtPayload";
 import RequestWithUser from "../utils/requestWithUser";
+import HttpException from "../exceptions/http.exception";
 
-const authMiddleware = (
-  req: RequestWithUser,
-  res: Response,
-  next: NextFunction
-) => {
+const authMiddleware = (req: RequestWithUser, _, next: NextFunction) => {
   try {
-    const token = req.header("Authorization").replace("Bearer ", "");
-
+    const tokenHeader = req.header("Authorization");
+    if (!tokenHeader) throw new HttpException(403, "Not authorized");
+    const token = tokenHeader.includes("Bearer")
+      ? tokenHeader.replace("Bearer ", "")
+      : tokenHeader;
     const payload = verify(token, "jwt_string");
     req.name = (payload as JwtPayload).name;
     req.email = (payload as JwtPayload).email;
