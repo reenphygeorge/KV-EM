@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToOne, Unique } from "typeorm";
 import AbstractEntity from "./abstract.entity";
 import Address from "./address.entity";
 import { Role } from "../utils/role.enum";
 import Department from "./department.entity";
 
 @Entity()
+@Unique(["email"])
 export default class Employee extends AbstractEntity {
   @Column()
   name: string;

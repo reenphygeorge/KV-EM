@@ -4,14 +4,15 @@ import Department from "../entity/department.entity";
 import { UpdateDepartmentDto } from "../dto/department.dto";
 
 export class DepartmentService {
-  constructor(private departmentRepository: DepartmentRepository) {
-    this.departmentRepository = departmentRepository;
-  }
+  constructor(private departmentRepository: DepartmentRepository) {}
 
   public getAllDepartments = async () => this.departmentRepository.find();
 
   public getDepartmentById = async (id: number) =>
     this.departmentRepository.findOneBy({ id });
+
+  public getDepartmentByName = async (name: string) =>
+    this.departmentRepository.findOneBy({ name });
 
   public createNewDepartment = async (name: string) => {
     const newDepartment = new Department();

@@ -7,18 +7,16 @@ import { Role } from "../utils/role.enum";
 import JwtPayload from "../utils/jwtPayload";
 import { sign } from "jsonwebtoken";
 import Department from "../entity/department.entity";
-import DepartmentRepository from "../repository/department.repository";
 import { UpdateEmployeeDto } from "../dto/employee.dto";
-import { UpdateAddressDto } from "../dto/address.dto";
-import { UpdateDepartmentDto } from "../dto/department.dto";
+import { DepartmentService } from "./department.service";
 
 export default class EmployeeService {
   constructor(
     private employeeRepository: EmployeeRepository,
-    private departmentRepository: DepartmentRepository
+    private departmentService: DepartmentService
   ) {
     this.employeeRepository = employeeRepository;
-    this.departmentRepository = departmentRepository;
+    this.departmentService = departmentService;
   }
 
   public getAllEmployees = async () => this.employeeRepository.find();
@@ -35,9 +33,9 @@ export default class EmployeeService {
     role: Role,
     department: Department
   ) => {
-    const departmentData = await this.departmentRepository.findOneBy({
-      name: department.name,
-    });
+    const departmentData = await this.departmentService.getDepartmentByName(
+      department.name
+    );
     if (!departmentData) {
       throw new HttpException(404, "Department Not Found");
     }
@@ -56,9 +54,9 @@ export default class EmployeeService {
     const employeeData = await this.getEmployeeById(employee.id);
     if (employee.address) employee.address.id = employeeData.address.id;
     if (employee.department) {
-      const departmentData = await this.departmentRepository.findOneBy({
-        name: employee.department.name,
-      });
+      const departmentData = await this.departmentService.getDepartmentByName(
+        employee.department.name
+      );
       if (!departmentData) {
         throw new HttpException(404, "Department Not Found");
       }

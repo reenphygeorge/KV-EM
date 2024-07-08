@@ -11,7 +11,7 @@ const authMiddleware = (req: RequestWithUser, _, next: NextFunction) => {
     const token = tokenHeader.includes("Bearer")
       ? tokenHeader.replace("Bearer ", "")
       : tokenHeader;
-    const payload = verify(token, "jwt_string");
+    const payload = verify(token, process.env.JWT_SECRET);
     req.name = (payload as JwtPayload).name;
     req.email = (payload as JwtPayload).email;
     req.role = (payload as JwtPayload).role;

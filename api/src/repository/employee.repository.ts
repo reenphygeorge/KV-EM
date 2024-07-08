@@ -22,7 +22,7 @@ export default class EmployeeRepository {
     await this.employeeRepository.save(newEmployee);
 
   update = async (employee: UpdateEmployeeDto) =>
-    await this.employeeRepository.save(employee);
+    this.employeeRepository.save(employee);
 
   remove = async (employee: Employee) =>
     await this.employeeRepository.softRemove(employee);
