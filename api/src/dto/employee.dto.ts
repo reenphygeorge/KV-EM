@@ -12,7 +12,7 @@ import { CreateAddressDto, UpdateAddressDto } from "./address.dto";
 import { Exclude, Type } from "class-transformer";
 import { Role } from "../utils/role.enum";
 import Department from "../entity/department.entity";
-import { CreateDepartmentDto } from "./department.dto";
+import { CreateDepartmentDto, UpdateDepartmentNoIdDto } from "./department.dto";
 
 export class CreateEmployeeDto {
   @IsString()
@@ -66,18 +66,23 @@ export class UpdateEmployeeDto {
 
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
 
   @IsEmail()
   @IsOptional()
-  email: string;
+  email?: string;
 
   @IsNumber()
   @IsOptional()
-  age: number;
+  age?: number;
 
   @ValidateNested()
   @IsOptional()
   @Type(() => UpdateAddressDto)
-  address: Address;
+  address?: Address;
+
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => UpdateDepartmentNoIdDto)
+  department?: Department;
 }

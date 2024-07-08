@@ -27,7 +27,7 @@ export default class DepartmentController {
   }
   getAllDepartments = async (_, res: Response) => {
     const departments = await this.departmentService.getAllDepartments();
-    res.json(departments);
+    res.json(plainToInstance(DepartmentResponseDto, departments));
   };
 
   getDepartmentById = async (
@@ -41,7 +41,7 @@ export default class DepartmentController {
       if (!department) {
         throw new HttpException(404, "Department not found");
       }
-      res.json(plainToInstance(DepartmentResponseDto, department));
+      res.json(plainToInstance(UpdateDepartmentDto, department));
     } catch (error) {
       next(error);
     }
@@ -67,7 +67,6 @@ export default class DepartmentController {
       const departmentData = await this.departmentService.createNewDepartment(
         departmentDto.name
       );
-      console.log(departmentData);
 
       res.status(201).json({
         success: true,
@@ -88,7 +87,6 @@ export default class DepartmentController {
       if (req.role !== Role.HR) {
         throw new HttpException(403, "Invalid Access");
       }
-      const id = Number(req.body.id);
       const departmentDto = plainToInstance(UpdateDepartmentDto, req.body);
       const errors = await validate(departmentDto);
 
@@ -97,8 +95,14 @@ export default class DepartmentController {
         throw new HttpException(400, "Validation Error", formattedError);
       }
 
-      await this.departmentService.updateDepartment(id, { ...req.body });
-      res.json({ sucess: true, message: "Department Updated!" });
+      const departmentData = await this.departmentService.updateDepartment(
+        departmentDto
+      );
+      res.json({
+        sucess: true,
+        message: "Department Updated!",
+        data: departmentData,
+      });
     } catch (err) {
       next(err);
     }

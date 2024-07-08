@@ -39,7 +39,7 @@ export default class EmployeeController {
       if (!employees) {
         throw new HttpException(404, "Employee not found");
       }
-      res.json(employees);
+      res.json(plainToInstance(EmployeeResponseDto, employees));
     } catch (error) {
       next(error);
     }
@@ -90,7 +90,6 @@ export default class EmployeeController {
       if (req.role !== Role.HR) {
         throw new HttpException(403, "Invalid Access");
       }
-      const id = Number(req.body.id);
       const employeeDto = plainToInstance(UpdateEmployeeDto, req.body);
       const errors = await validate(employeeDto);
 
@@ -99,8 +98,12 @@ export default class EmployeeController {
         throw new HttpException(400, "Validation Error", formattedError);
       }
 
-      await this.employeeService.updateEmployee(id, { ...req.body });
-      res.json({ sucess: true, message: "Employee Updated!" });
+      const updateData = await this.employeeService.updateEmployee(employeeDto);
+      res.json({
+        sucess: true,
+        message: "Employee Updated!",
+        data: updateData,
+      });
     } catch (err) {
       next(err);
     }

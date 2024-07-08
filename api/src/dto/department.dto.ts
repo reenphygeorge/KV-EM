@@ -1,11 +1,12 @@
 import {
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator";
 import { EmployeeResponseDto } from "./employee.dto";
-import { Type } from "class-transformer";
+import { Exclude, Type } from "class-transformer";
 import Employee from "../entity/employee.entity";
 
 export class CreateDepartmentDto {
@@ -13,12 +14,17 @@ export class CreateDepartmentDto {
   @IsNotEmpty()
   name: string;
 }
-
-export class UpdateDepartmentDto {
+export class UpdateDepartmentNoIdDto {
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
 }
+
+export class UpdateDepartmentDto extends UpdateDepartmentNoIdDto {
+  @IsNumber()
+  id: number;
+}
+UpdateDepartmentDto;
 
 export class DepartmentResponseDto {
   @IsString()
@@ -28,5 +34,5 @@ export class DepartmentResponseDto {
   @ValidateNested()
   @IsOptional()
   @Type(() => EmployeeResponseDto)
-  employee: Employee;
+  employee: EmployeeResponseDto;
 }

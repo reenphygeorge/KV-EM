@@ -1,5 +1,6 @@
 import { Repository } from "typeorm";
 import Employee from "../entity/employee.entity";
+import { UpdateEmployeeDto } from "../dto/employee.dto";
 
 export default class EmployeeRepository {
   constructor(private employeeRepository: Repository<Employee>) {
@@ -8,7 +9,7 @@ export default class EmployeeRepository {
 
   find = async () =>
     await this.employeeRepository.find({
-      relations: { address: true },
+      relations: { address: true, department: true },
     });
 
   findOneBy = async (filter: Partial<Employee>, relations?: string[]) =>
@@ -20,9 +21,8 @@ export default class EmployeeRepository {
   save = async (newEmployee: Employee) =>
     await this.employeeRepository.save(newEmployee);
 
-  update = async (id: number, employee: Partial<Employee>) =>
-    // await this.employeeRepository.save({ id, ...employee });
-    await this.employeeRepository.update({ id }, employee);
+  update = async (employee: UpdateEmployeeDto) =>
+    await this.employeeRepository.save(employee);
 
   remove = async (employee: Employee) =>
     await this.employeeRepository.softRemove(employee);

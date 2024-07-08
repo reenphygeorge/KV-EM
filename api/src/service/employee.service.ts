@@ -8,6 +8,9 @@ import JwtPayload from "../utils/jwtPayload";
 import { sign } from "jsonwebtoken";
 import Department from "../entity/department.entity";
 import DepartmentRepository from "../repository/department.repository";
+import { UpdateEmployeeDto } from "../dto/employee.dto";
+import { UpdateAddressDto } from "../dto/address.dto";
+import { UpdateDepartmentDto } from "../dto/department.dto";
 
 export default class EmployeeService {
   constructor(
@@ -49,12 +52,22 @@ export default class EmployeeService {
     return await this.employeeRepository.save(newEmployee);
   };
 
-  public updateEmployee = async (id: number, employee: Partial<Employee>) => {
-    const employeeData = await this.getEmployeeById(id);
+  public updateEmployee = async (employee: UpdateEmployeeDto) => {
+    const employeeData = await this.getEmployeeById(employee.id);
+    if (employee.address) employee.address.id = employeeData.address.id;
+    if (employee.department) {
+      const departmentData = await this.departmentRepository.findOneBy({
+        name: employee.department.name,
+      });
+      if (!departmentData) {
+        throw new HttpException(404, "Department Not Found");
+      }
+      employee.department = departmentData;
+    }
     if (!employeeData) {
       throw new HttpException(404, "Employee Not Found");
     }
-    await this.employeeRepository.update(id, employee);
+    return await this.employeeRepository.update(employee);
   };
 
   public deleteEmployee = async (id: number) => {

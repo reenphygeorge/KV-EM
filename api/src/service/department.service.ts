@@ -1,6 +1,7 @@
 import HttpException from "../exceptions/http.exception";
 import DepartmentRepository from "../repository/department.repository";
 import Department from "../entity/department.entity";
+import { UpdateDepartmentDto } from "../dto/department.dto";
 
 export class DepartmentService {
   constructor(private departmentRepository: DepartmentRepository) {
@@ -10,23 +11,20 @@ export class DepartmentService {
   public getAllDepartments = async () => this.departmentRepository.find();
 
   public getDepartmentById = async (id: number) =>
-    this.departmentRepository.findOneBy({ id }, ["employee"]);
+    this.departmentRepository.findOneBy({ id });
 
   public createNewDepartment = async (name: string) => {
     const newDepartment = new Department();
     newDepartment.name = name;
-    await this.departmentRepository.save(newDepartment);
+    return await this.departmentRepository.save(newDepartment);
   };
 
-  public updateDepartment = async (
-    id: number,
-    department: Partial<Department>
-  ) => {
-    const departmentData = await this.getDepartmentById(id);
+  public updateDepartment = async (department: UpdateDepartmentDto) => {
+    const departmentData = await this.getDepartmentById(department.id);
     if (!departmentData) {
       throw new HttpException(404, "Department Not Found");
     }
-    await this.departmentRepository.update(id, department);
+    return await this.departmentRepository.update(department);
   };
 
   public deleteDepartment = async (id: number) => {

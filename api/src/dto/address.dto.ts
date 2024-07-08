@@ -13,9 +13,9 @@ export class CreateAddressDto {
 export class UpdateAddressDto {
   @IsString()
   @IsOptional()
-  line1: string;
+  line1?: string;
 
   @IsString()
   @IsOptional()
-  pincode: string;
+  pincode?: string;
 }
