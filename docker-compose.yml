@@ -1,8 +1,8 @@
 services:
-  ui:
+  ui-legacy:
     image: kv-ui
     build:
-      context: ./ui
+      context: ./ui-legacy
       dockerfile: dockerfile
     ports:
       - "8080:80"
