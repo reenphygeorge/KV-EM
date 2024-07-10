@@ -1,0 +1,16 @@
+.toast {
+    padding: 20px;
+    color: white;
+    border-radius: 5px;
+    position: absolute;
+    top: 5%;
+    right: 40%;
+}
+
+.red {
+    background-color: rgb(204, 95, 95);
+}
+
+.green {
+    background-color: rgb(83, 161, 83);
+}

@@ -4,7 +4,6 @@ import Login from "./pages/login/login.jsx";
 
 const App = () => {
   const [login, setLogin] = useState(false);
-  console.log(login);
   return login ? (
     <CreateEmployee />
   ) : (

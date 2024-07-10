@@ -1,9 +1,9 @@
 import "./formElements.style.css";
 
-const SelectField = ({ label, options }) => (
+const SelectField = ({ id, label, options, text, handleChange }) => (
   <div className="input-wrap">
     <label htmlFor={label}>{label}</label>
-    <select id={label}>
+    <select id={id} value={text} onChange={handleChange}>
       <option value="" selected disabled>
         choose a role
       </option>
