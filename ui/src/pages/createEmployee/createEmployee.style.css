@@ -31,14 +31,21 @@
 
 .form-wrap {
   background-color: #ffffff;
-  display: flex;
-  gap: 50px;
-  align-items: center;
-  flex-wrap: wrap;
   margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgb(231, 231, 231);
   padding: 50px;
+}
+
+.form-flex {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.button-wrap {
+  margin-top: 50px;
 }
 
 @media screen and (max-width: 820px) {

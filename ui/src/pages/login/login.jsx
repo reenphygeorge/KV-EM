@@ -1,18 +1,22 @@
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./login.style.css";
 import loginImage from "../../assets/kv-login.jpeg";
 import kvLogo from "../../assets/kv-logo.png";
 import Button from "../../components/button/Button";
 import TextField from "../../components/formElements/TextField";
-import { useEffect, useRef, useState } from "react";
 import Toast from "../../components/toast/toast";
 
-const Login = ({ login, setLogin }) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [validate, setValidate] = useState({ status: true, message: "" });
 
   const usernameRef = useRef(null);
+
+  const navigate = useNavigate();
+  const user = localStorage.getItem("kvLogin");
 
   const handleUsernameChange = (e) => {
     if (e.target.value.length > 10)
@@ -44,6 +48,12 @@ const Login = ({ login, setLogin }) => {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem("kvLogin", true);
+    navigate("/employee/create");
+  };
+
   const fieldData = [
     {
       label: "Username",
@@ -63,6 +73,10 @@ const Login = ({ login, setLogin }) => {
   ];
 
   useEffect(() => {
+    if (user) navigate("/employee/create");
+  }, [user, navigate]);
+
+  useEffect(() => {
     usernameRef.current.focus();
   }, []);
 
@@ -80,7 +94,12 @@ const Login = ({ login, setLogin }) => {
         </div>
       </div>
       <div className="login">
-        <form className="login-form" action="/" method="post">
+        <form
+          className="login-form"
+          action="/"
+          method="post"
+          onSubmit={handleSubmit}
+        >
           <img src={kvLogo} alt="Logo" className="login-logo" />
           {fieldData.map(
             ({ label, type, placeholder, text, handleChange, ref }) => (
@@ -95,7 +114,7 @@ const Login = ({ login, setLogin }) => {
               />
             )
           )}
-          <Button innerText="Login" login={login} setLogin={setLogin} />
+          <Button innerText="Login" />
         </form>
       </div>
     </main>

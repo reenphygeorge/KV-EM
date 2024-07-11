@@ -1,4 +1,4 @@
-import "./toast.css";
+import "./toast.style.css";
 
 const Toast = ({ status, message, showToast }) =>
   showToast ? (

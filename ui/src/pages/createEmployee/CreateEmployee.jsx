@@ -2,7 +2,6 @@ import { useState } from "react";
 import Button from "../../components/button/Button";
 import SelectField from "../../components/formElements/SelectField";
 import TextField from "../../components/formElements/TextField";
-import Sidebar from "../../components/sidebar/Sidebar";
 import "./createEmployee.style.css";
 
 const CreateEmployee = () => {
@@ -72,17 +71,19 @@ const CreateEmployee = () => {
     },
   ];
 
-  console.log(employeeData);
+  const displayData = (e) => {
+    e.preventDefault();
+    console.log(employeeData);
+  };
 
   return (
-    <>
-      <Sidebar />
-      <main className="create-main">
-        <section className="create-section">
-          <div className="create-wrap">
-            <h1>Create Employee</h1>
-          </div>
-          <form action="" className="form-wrap">
+    <main className="create-main">
+      <section className="create-section">
+        <div className="create-wrap">
+          <h1>Create Employee</h1>
+        </div>
+        <form className="form-wrap" onSubmit={displayData}>
+          <div className="form-flex">
             {fieldData.map((data) =>
               data.select ? (
                 <SelectField
@@ -103,14 +104,14 @@ const CreateEmployee = () => {
                 />
               )
             )}
-            <div className="button-wrap">
-              <Button innerText="Create" />
-              <Button innerText="Cancel" type="reset" style="outline" />
-            </div>
-          </form>
-        </section>
-      </main>
-    </>
+          </div>
+          <div className="button-wrap">
+            <Button innerText="Create" />
+            <Button innerText="Cancel" type="reset" style="outline" />
+          </div>
+        </form>
+      </section>
+    </main>
   );
 };
 

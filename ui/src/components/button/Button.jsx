@@ -4,13 +4,12 @@ const Button = ({
   innerText,
   type = "submit",
   style = "normal",
-  login = false,
-  setLogin = () => null,
+  onClick = () => null,
 }) => (
   <button
     type={type}
     className={style === "outline" ? "outline-btn" : "normal-btn"}
-    onClick={setLogin ? setLogin(!login) : ""}
+    onClick={onClick ? onClick : ""}
   >
     {innerText}
   </button>
