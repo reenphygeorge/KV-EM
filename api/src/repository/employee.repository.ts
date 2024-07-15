@@ -18,11 +18,8 @@ export default class EmployeeRepository {
       relations,
     });
 
-  save = async (newEmployee: Employee) =>
+  save = async (newEmployee: Partial<Employee>) =>
     await this.employeeRepository.save(newEmployee);
-
-  update = async (employee: UpdateEmployeeDto) =>
-    this.employeeRepository.save(employee);
 
   remove = async (employee: Employee) =>
     await this.employeeRepository.softRemove(employee);

@@ -3,6 +3,7 @@ import Button from "../button/Button";
 import SelectField from "./SelectField";
 import TextField from "./TextField";
 import "./userForm.css";
+import { useOutletContext } from "react-router-dom";
 
 const UserForm = ({
   data,
@@ -11,6 +12,8 @@ const UserForm = ({
   editMode = false,
 }) => {
   const [employeeData, setEmployeeData] = useState(data);
+  const { state } = useOutletContext();
+  const departments = state.departments.map((department) => department.name);
 
   const handleChange = (e) => {
     setEmployeeData({ ...employeeData, [e.target.id]: e.target.value });
@@ -54,7 +57,7 @@ const UserForm = ({
       label: "Status",
       id: "status",
       select: true,
-      options: ["Joined", "On Leave"],
+      options: ["Active", "Inactive", "Probation"],
       value: employeeData.status,
       required: true,
     },
@@ -62,7 +65,7 @@ const UserForm = ({
       label: "Department",
       id: "department",
       select: true,
-      options: ["UI/UX", "Developer", "Product Manager", "HR"],
+      options: departments,
       value: employeeData.department,
       required: true,
     },
@@ -136,7 +139,7 @@ const UserForm = ({
       <div className="button-wrap">
         <Button
           innerText={editMode ? "Edit" : "Create"}
-          onClick={submitHandler}
+          onClick={() => submitHandler(employeeData)}
         />
         <Button
           innerText="Cancel"

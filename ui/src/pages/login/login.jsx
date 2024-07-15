@@ -108,7 +108,7 @@ const Login = () => {
                 label={label}
                 type={type}
                 placeholder={placeholder}
-                text={text}
+                value={text}
                 handleChange={handleChange}
                 {...(ref ? { ref } : "")}
               />

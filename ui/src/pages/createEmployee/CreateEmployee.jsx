@@ -1,7 +1,11 @@
+import { v4 as uuidv4 } from "uuid";
 import "./createEmployee.style.css";
 import UserForm from "../../components/formElements/userForm";
+import { actionTypes } from "../../store/reducer";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const CreateEmployee = () => {
+  const { dispatch } = useOutletContext();
   const employeeData = {
     id: "",
     name: "",
@@ -15,8 +19,14 @@ const CreateEmployee = () => {
     addressLine2: "",
   };
 
-  const createEmployee = () => {
-    console.log("Employee Created!");
+  const navigate = useNavigate();
+
+  const createEmployee = (data) => {
+    navigate("/employee/list");
+    dispatch({
+      type: actionTypes.ADD_EMPLOYEE,
+      payload: { ...data, id: uuidv4() },
+    });
   };
   return (
     <main className="create-main">

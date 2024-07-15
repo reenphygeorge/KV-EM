@@ -65,7 +65,7 @@ export default class EmployeeService {
     if (!employeeData) {
       throw new HttpException(404, "Employee Not Found");
     }
-    return await this.employeeRepository.update(employee);
+    return await this.employeeRepository.save(employee);
   };
 
   public deleteEmployee = async (id: number) => {
@@ -74,6 +74,7 @@ export default class EmployeeService {
       throw new HttpException(404, "Employee Not Found");
     }
     this.employeeRepository.remove(employeeData);
+    return employeeData;
   };
 
   public loginEmployee = async (email: string, password: string) => {
