@@ -1,0 +1,77 @@
+.edit-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b5eafd;
+  border-radius: 50px;
+  padding-right: 30px;
+  gap: 20px;
+  margin-right: 20px;
+}
+
+.edit-wrapper h4 {
+  font-weight: 500;
+}
+
+.edit-button {
+  background-color: #7cd1ef;
+  border: none;
+  color: white;
+  padding: 15px;
+  border-radius: 100%;
+}
+
+.opacity {
+  opacity: 0.2;
+}
+
+.employee-detail {
+  margin-top: 50px;
+  display: flex;
+  width: 80em;
+  height: 30vh;
+  flex-wrap: wrap;
+}
+
+.employee-detail h6 {
+  font-size: 15px;
+  font-weight: 500;
+  color: #696969;
+  margin-bottom: 10px;
+}
+
+.employee-detail p {
+  color: #1b1b1b;
+  font-weight: 400;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.status-pill {
+  padding: 8px;
+  width: 100px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.inactive {
+  background-color: rgb(246, 146, 129);
+}
+
+.probation {
+  background-color: rgb(224, 227, 78);
+}
+
+.active {
+  background-color: rgb(78, 227, 177);
+}
+
+.status-pill p {
+  font-size: 15px;
+  color: #1f1f1f;
+}

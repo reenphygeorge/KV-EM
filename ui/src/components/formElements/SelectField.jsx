@@ -1,15 +1,15 @@
 import "./formElements.style.css";
 
-const SelectField = ({ id, label, options, text, handleChange }) => (
+const SelectField = ({ id, label, options, value, handleChange }) => (
   <div className="input-wrap">
     <label htmlFor={label}>{label}</label>
-    <select id={id} value={text} onChange={handleChange}>
+    <select id={id} value={value} onChange={handleChange}>
       <option value="" selected disabled>
         choose a role
       </option>
-      {options.map((value) => (
-        <option key={value} value={value}>
-          {value}
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
         </option>
       ))}
     </select>

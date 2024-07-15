@@ -2,7 +2,15 @@ import { forwardRef } from "react";
 import "./formElements.style.css";
 
 const TextFieldComponent = (
-  { label, id, type, text = "", handleChange = () => null },
+  {
+    label,
+    id,
+    type,
+    value = "",
+    handleChange = () => null,
+    required = false,
+    disabled = false,
+  },
   ref
 ) => {
   return (
@@ -10,12 +18,13 @@ const TextFieldComponent = (
       <label htmlFor={label}>{label}</label>
       <input
         ref={ref}
-        value={text}
+        value={value}
         id={id}
         type={type}
         placeholder={label}
         onChange={handleChange}
-        required
+        required={required}
+        disabled={disabled}
       />
     </div>
   );

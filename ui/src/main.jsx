@@ -6,6 +6,7 @@ import CreateEmployee from "./pages/createEmployee/CreateEmployee";
 import ErrorPage from "./pages/errorPage/errorPage";
 import EmployeeDetails from "./pages/employeeDetails/employeeDetails";
 import EmployeeLayout from "./layouts/employee.layout";
+import SingleEmployee from "./pages/employeeDetails/singleEmployee";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "list",
         element: <EmployeeDetails />,
+      },
+      {
+        path: "view/:id",
+        element: <SingleEmployee />,
       },
     ],
   },
