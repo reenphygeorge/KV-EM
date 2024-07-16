@@ -2,14 +2,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar/Sidebar";
 import { useEffect, useReducer } from "react";
 import { employeeReducer } from "../store/reducer";
-import { departmentDataFetched, userDataFetched } from "../store/store";
+import {
+  departmentDataFetched,
+  employeeDataFetched,
+} from "../store/sampleData";
 
 const EmployeeLayout = () => {
   const user = localStorage.getItem("kvLogin");
   const navigate = useNavigate();
 
   const [state, dispatch] = useReducer(employeeReducer, {
-    employees: userDataFetched,
+    employees: employeeDataFetched,
     filterStatusBy: "All",
     departments: departmentDataFetched,
   });

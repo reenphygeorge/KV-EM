@@ -7,7 +7,11 @@ export class CreateAddressDto {
 
   @IsString()
   @IsNotEmpty()
-  pincode: string;
+  line2: string;
+
+  @IsString()
+  @IsNotEmpty()
+  flatOrPhoneNo: string;
 }
 
 export class UpdateAddressDto {

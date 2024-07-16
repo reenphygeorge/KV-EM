@@ -9,6 +9,7 @@ import { sign } from "jsonwebtoken";
 import Department from "../entity/department.entity";
 import { UpdateEmployeeDto } from "../dto/employee.dto";
 import { DepartmentService } from "./department.service";
+import { Status } from "../utils/status.enum";
 
 export default class EmployeeService {
   constructor(
@@ -27,9 +28,11 @@ export default class EmployeeService {
   public createNewEmployee = async (
     name: string,
     email: string,
-    age: number,
     address: Address,
     password: string,
+    status: Status,
+    experience: number,
+    joinDate: Date,
     role: Role,
     department: Department
   ) => {
@@ -42,10 +45,12 @@ export default class EmployeeService {
     const newEmployee = new Employee();
     newEmployee.name = name;
     newEmployee.email = email;
-    newEmployee.age = age;
     newEmployee.address = address;
     newEmployee.password = await hash(password, 10);
     newEmployee.role = role;
+    newEmployee.status = status;
+    newEmployee.experience = experience;
+    newEmployee.joinDate = joinDate;
     newEmployee.department = departmentData;
     return await this.employeeRepository.save(newEmployee);
   };

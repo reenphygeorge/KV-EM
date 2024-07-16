@@ -2,26 +2,58 @@ import { MdOutlineDelete, MdModeEditOutline } from "react-icons/md";
 import { GoPlus } from "react-icons/go";
 import "./employeeDetails.style.css";
 import RoundedSelect from "../../components/formElements/RoundedSelect";
-import { useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../../components/modal/Modal";
 import UserForm from "../../components/formElements/userForm";
 import DeleteEmployee from "./deleteEmployeeConfirmation";
-import { actionTypes } from "../../store/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { changeFilter, editEmployee } from "../../store/employeeReducer";
+import {
+  useDeleteEmployeeMutation,
+  useGetAllEmployeesQuery,
+} from "./employee.api";
 
 const EmployeeDetails = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useOutletContext();
+  const dispatch = useDispatch();
+
+  const { data = [] } = useGetAllEmployeesQuery();
+
+  const [employeeData, setEmployeeData] = useState([]);
+
+  useEffect(() => {
+    if (data.length !== 0) {
+      const fetchedEmployeeData = data.map((data) => {
+        return {
+          id: data.id,
+          name: data.name,
+          joinDate: data.joinDate.split("T")[0],
+          role: data.role,
+          status: data.status,
+          experience: data.experience,
+          addressLine1: data.address.line1,
+          addressLine2: data.address.line2,
+          flatOrPhoneNo: data.address.flatOrPhoneNo,
+          department: data.department.name,
+        };
+      });
+      setEmployeeData(fetchedEmployeeData);
+    }
+  }, [data]);
+
+  const employees = useSelector((state) => state.employees.employees);
+  const filterStatusBy = useSelector((state) => state.employees.filterStatusBy);
 
   const [editId, setEditId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
 
   const filteredData =
-    state.filterStatusBy !== "All"
-      ? state.employees.filter(
-          (employee) => employee.status === state.filterStatusBy
-        )
-      : state.employees;
+    filterStatusBy !== "All"
+      ? employeeData.filter((employee) => employee.status === filterStatusBy)
+      : employeeData;
+
+  const [deleteEmployee, { isError, isSuccess }] = useDeleteEmployeeMutation();
 
   const editMode = (id) => {
     setEditId(id);
@@ -32,23 +64,32 @@ const EmployeeDetails = () => {
   };
 
   const saveEdit = (data) => {
-    dispatch({ type: actionTypes.EDIT_EMPLOYEE, payload: data });
+    dispatch(editEmployee(data));
     setEditId(null);
   };
 
-  const deleteEmployee = () => {
-    dispatch({ type: actionTypes.DELETE_EMPLOYEE, payload: deleteId });
-    console.log(`Deleted ${deleteId}`);
-    setDeleteId(null);
+  const deleteEmployeeHandler = () => {
+    deleteEmployee(deleteId);
   };
 
   const filter = (e) => {
-    dispatch({ type: actionTypes.FILTER_EMPLOYEE, payload: e.target.value });
+    e.target.value === "Status"
+      ? dispatch(changeFilter("All"))
+      : dispatch(changeFilter(e.target.value));
   };
 
   const cancelDelete = () => {
     setDeleteId(null);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setDeleteId(null);
+    } else if (isError) {
+      console.log("Error");
+      setDeleteId(null);
+    }
+  }, [isSuccess, isError]);
 
   return (
     <>
@@ -56,7 +97,7 @@ const EmployeeDetails = () => {
         <Modal
           child={
             <UserForm
-              data={state.employees.find((employee) => employee.id === editId)}
+              data={employees.find((employee) => employee.id === editId)}
               editMode={editId !== null ? true : false}
               cancelHandler={cancelEdit}
               submitHandler={saveEdit}
@@ -70,7 +111,7 @@ const EmployeeDetails = () => {
         <Modal
           child={
             <DeleteEmployee
-              deleteHandler={deleteEmployee}
+              deleteHandler={deleteEmployeeHandler}
               cancelHandler={cancelDelete}
             />
           }
@@ -132,7 +173,7 @@ const EmployeeDetails = () => {
                           <p>{status}</p>
                         </div>
                       </td>
-                      <td>{experience}</td>
+                      <td>{experience} years</td>
                       <td className="action-td">
                         <MdOutlineDelete
                           size="25px"

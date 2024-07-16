@@ -6,6 +6,7 @@ import kvLogo from "../../assets/kv-logo.png";
 import Button from "../../components/button/Button";
 import TextField from "../../components/formElements/TextField";
 import Toast from "../../components/toast/toast";
+import { useLoginMutation } from "./login.api";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,13 +17,25 @@ const Login = () => {
   const usernameRef = useRef(null);
 
   const navigate = useNavigate();
-  const user = localStorage.getItem("kvLogin");
+  const [login, { isSuccess, data, isError }] = useLoginMutation();
 
-  const handleUsernameChange = (e) => {
-    if (e.target.value.length > 10)
+  useEffect(() => {
+    if (isSuccess) {
+      localStorage.setItem("kvLogin", data.token);
+      navigate("/employee/create");
+    } else if (isError) {
       setValidate({
         status: false,
-        message: "Username should have max 10 characters",
+        message: "Credentials Wrong, Try again!!",
+      });
+    }
+  }, [isSuccess, isError, data, navigate]);
+
+  const handleUsernameChange = (e) => {
+    if (e.target.value.length > 30)
+      setValidate({
+        status: false,
+        message: "Username can have max 30 characters",
       });
     else {
       setValidate({ status: true });
@@ -48,10 +61,9 @@ const Login = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem("kvLogin", true);
-    navigate("/employee/create");
+    await login({ email: username, password });
   };
 
   const fieldData = [
@@ -71,10 +83,6 @@ const Login = () => {
       handleChange: handlePasswordChange,
     },
   ];
-
-  useEffect(() => {
-    if (user) navigate("/employee/create");
-  }, [user, navigate]);
 
   useEffect(() => {
     usernameRef.current.focus();

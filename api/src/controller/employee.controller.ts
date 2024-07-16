@@ -65,9 +65,11 @@ export default class EmployeeController {
       const employeeData = await this.employeeService.createNewEmployee(
         employeeDto.name,
         employeeDto.email,
-        employeeDto.age,
         employeeDto.address,
         employeeDto.password,
+        employeeDto.status,
+        employeeDto.experience,
+        employeeDto.joinDate,
         employeeDto.role,
         employeeDto.department
       );

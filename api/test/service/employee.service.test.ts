@@ -6,11 +6,13 @@
 // import Address from "../../src/entity/address.entity";
 // import Department from "../../src/entity/department.entity";
 // import { Role } from "../../src/utils/role.enum";
+// import { DepartmentService } from "../../src/service/department.service";
 
 // describe("Employee Service", () => {
 //   let employeeRepository: EmployeeRepository;
 //   let departmentRepository: DepartmentRepository;
 //   let employeeService: EmployeeService;
+//   let departmentService: DepartmentService;
 //   let dummyEmployees: Employee[];
 //   let dummyAddresses: Address[];
 //   let dummyDepartments: Department[];
@@ -27,9 +29,11 @@
 //       dataSource.getRepository(Department)
 //     ) as jest.Mocked<DepartmentRepository>;
 
+//     departmentService = new DepartmentService(departmentRepository);
+
 //     employeeService = new EmployeeService(
 //       employeeRepository,
-//       departmentRepository
+//       departmentService
 //     );
 
 //     dummyAddresses = [
@@ -102,7 +106,7 @@
 //     ];
 //   });
 
-//   it("should return allEmployees", async () => {
+//   it("should return all employees", async () => {
 //     const mock = jest
 //       .fn(employeeRepository.find)
 //       .mockResolvedValue(dummyEmployees);
@@ -158,5 +162,43 @@
 //     );
 //     expect(user).toEqual(dummyEmployees[0]);
 //     expect(mockSave).toHaveBeenCalledTimes(1);
+//   });
+
+//   it.only("should return update employee", async () => {
+//     const mockSave = jest.fn();
+//     when(mockSave)
+//       .calledWith(dummyEmployees[0])
+//       .mockResolvedValue(dummyEmployees[0]);
+//     employeeRepository.save = mockSave;
+
+//     const mockFetchById = jest.fn();
+//     when(mockFetchById)
+//       .calledWith({ id: 1 }, ["address", "department"])
+//       .mockResolvedValue(dummyEmployees[0]);
+//     employeeRepository.findOneBy = mockFetchById;
+
+//     const mockDepartment = jest.fn();
+//     when(mockDepartment)
+//       .calledWith("HR")
+//       .mockResolvedValue(dummyDepartments[0]);
+//     departmentService.getDepartmentByName = mockDepartment;
+
+//     const userUpdate = await employeeService.updateEmployee(dummyEmployees[0]);
+//     expect(userUpdate).toEqual(dummyEmployees[0]);
+//     expect(mockSave).toHaveBeenCalledTimes(1);
+//     expect(mockDepartment).toHaveBeenCalledTimes(1);
+//     expect(mockFetchById).toHaveBeenCalledTimes(1);
+//   });
+
+//   it.only("should delete employee", async () => {
+//     const mockFetchById = jest.fn();
+//     when(mockFetchById)
+//       .calledWith({ id: 1 })
+//       .mockResolvedValue(dummyEmployees[0]);
+//     employeeRepository.findOneBy = mockFetchById;
+
+//     const mockRemove = jest.fn();
+//     when(mockRemove).calledWith(1).mockResolvedValue(dummyEmployees[0]);
+//     employeeRepository.remove = mockRemove;
 //   });
 // });

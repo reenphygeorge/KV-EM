@@ -72,7 +72,7 @@ const UserForm = ({
     {
       label: "Experience",
       id: "experience",
-      type: "text",
+      type: "number",
       select: false,
       value: employeeData.experience,
       required: true,

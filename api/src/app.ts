@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors, { CorsOptions } from "cors";
 import { loggerMiddleware } from "./middlewares/logger.middleware";
 import { dataSource } from "./db/data-source.db";
 import employeeRouter from "./routes/employee.route";
@@ -9,6 +10,11 @@ import departmentRouter from "./routes/department.route";
 const app = express();
 dotenv.config();
 
+const corsOptions: CorsOptions = {
+  origin: "http://localhost:5173",
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use(loggerMiddleware);

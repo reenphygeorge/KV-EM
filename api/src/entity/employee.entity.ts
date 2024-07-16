@@ -3,6 +3,7 @@ import AbstractEntity from "./abstract.entity";
 import Address from "./address.entity";
 import { Role } from "../utils/role.enum";
 import Department from "./department.entity";
+import { Status } from "../utils/status.enum";
 
 @Entity()
 @Unique(["email"])
@@ -13,20 +14,26 @@ export default class Employee extends AbstractEntity {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  password: string;
+
+  @Column({ nullable: true })
+  role: Role;
+
   @Column()
-  age: number;
+  status: Status;
+
+  @Column()
+  experience: number;
+
+  @Column()
+  joinDate: Date;
 
   @OneToOne(() => Address, (address) => address.employee, {
     cascade: true,
     onDelete: "CASCADE",
   })
   address: Address;
-
-  @Column({ nullable: true })
-  password: string;
-
-  @Column({ nullable: true })
-  role: Role;
 
   @ManyToOne(() => Department, (department) => department.employee)
   department: Department;

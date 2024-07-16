@@ -1,6 +1,6 @@
 export enum Role {
-  UI = "UI",
-  UX = "UX",
-  DEVELOPER = "Developer",
+  SENIOR = "Senior",
+  ASSOCIATE = "Associate",
+  PROBATION = "Probation",
   HR = "HR",
 }

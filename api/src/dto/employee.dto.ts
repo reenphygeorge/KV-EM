@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -13,6 +14,7 @@ import { Exclude, Type } from "class-transformer";
 import { Role } from "../utils/role.enum";
 import Department from "../entity/department.entity";
 import { CreateDepartmentDto, UpdateDepartmentNoIdDto } from "./department.dto";
+import { Status } from "../utils/status.enum";
 
 export class CreateEmployeeDto {
   @IsString()
@@ -24,9 +26,23 @@ export class CreateEmployeeDto {
   @IsNotEmpty()
   email: string;
 
+  @IsString()
   @IsNotEmpty()
+  password: string;
+
+  @IsEnum(Role)
+  role: Role;
+
+  @IsEnum(Status)
+  status: Status;
+
   @IsNumber()
-  age: number;
+  @IsNotEmpty()
+  experience: number;
+
+  @IsDateString()
+  @IsNotEmpty()
+  joinDate: Date;
 
   @ValidateNested()
   @Type(() => CreateAddressDto)
@@ -35,13 +51,6 @@ export class CreateEmployeeDto {
   @ValidateNested()
   @Type(() => CreateDepartmentDto)
   department: Department;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
-  @IsEnum(Role)
-  role: Role;
 }
 
 export class EmployeeResponseDto extends CreateEmployeeDto {
@@ -72,9 +81,21 @@ export class UpdateEmployeeDto {
   @IsOptional()
   email?: string;
 
+  @IsEnum(Role)
+  @IsOptional()
+  role?: Role;
+
+  @IsEnum(Status)
+  @IsOptional()
+  status?: Status;
+
   @IsNumber()
   @IsOptional()
-  age?: number;
+  experience?: number;
+
+  @IsDateString()
+  @IsOptional()
+  joinDate?: Date;
 
   @ValidateNested()
   @IsOptional()
