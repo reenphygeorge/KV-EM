@@ -45,7 +45,6 @@ const SingleEmployee = () => {
     }
   }, [data, isSuccess, isError]);
   const dispatch = useDispatch();
-  // const employees = useSelector((state) => state.employees.employees);
   const [editMode, setEditMode] = useState(false);
   const cancelEdit = () => {
     setEditMode(false);

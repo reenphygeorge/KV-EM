@@ -13,8 +13,30 @@ const employeeBaseApi = createApi({
   endpoints: () => ({}),
 });
 
-const apiWithTag = employeeBaseApi.enhanceEndpoints({
+const departmentBaseApi = createApi({
+  reducerPath: "departmentApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3000",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("kvLogin");
+      headers.set("Authorization", `Bearer ${token}`);
+      return headers;
+    },
+  }),
+  endpoints: () => ({}),
+});
+
+const employeeWithTag = employeeBaseApi.enhanceEndpoints({
   addTagTypes: ["EMPLOYEE_LIST"],
 });
 
-export { apiWithTag as default, employeeBaseApi };
+const departmentWithTag = departmentBaseApi.enhanceEndpoints({
+  addTagTypes: ["EMPLOYEE_LIST"],
+});
+
+export {
+  employeeWithTag,
+  employeeBaseApi,
+  departmentWithTag,
+  departmentBaseApi,
+};

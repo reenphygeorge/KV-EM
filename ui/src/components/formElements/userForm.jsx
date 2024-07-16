@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../button/Button";
 import SelectField from "./SelectField";
 import TextField from "./TextField";
 import "./userForm.css";
-import { useOutletContext } from "react-router-dom";
+import { useGetDepartmentsQuery } from "../../pages/employeeDetails/department.api";
 
 const UserForm = ({
   data,
@@ -11,9 +11,18 @@ const UserForm = ({
   cancelHandler = () => null,
   editMode = false,
 }) => {
+  const [departments, setDepartments] = useState([]);
   const [employeeData, setEmployeeData] = useState(data);
-  const { state } = useOutletContext();
-  const departments = state.departments.map((department) => department.name);
+  const departmentsQuery = useGetDepartmentsQuery();
+
+  useEffect(() => {
+    if (departmentsQuery.isSuccess) {
+      const departmentFetched = departmentsQuery.data.map((department) => {
+        return department.name;
+      });
+      setDepartments(departmentFetched);
+    }
+  }, [departmentsQuery.isSuccess, departmentsQuery.data]);
 
   const handleChange = (e) => {
     setEmployeeData({ ...employeeData, [e.target.id]: e.target.value });

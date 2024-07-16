@@ -1,6 +1,6 @@
-import apiWithTag from "../../../api/employeeApi";
+import { employeeWithTag } from "../../../api/employeeApi";
 
-export const loginApi = apiWithTag.injectEndpoints({
+export const loginApi = employeeWithTag.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (payload) => ({

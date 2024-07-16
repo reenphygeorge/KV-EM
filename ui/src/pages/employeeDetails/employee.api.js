@@ -1,6 +1,6 @@
-import apiWithTag from "../../../api/employeeApi";
+import { employeeWithTag } from "../../../api/employeeApi";
 
-export const EmployeeApi = apiWithTag.injectEndpoints({
+export const EmployeeApi = employeeWithTag.injectEndpoints({
   endpoints: (builder) => ({
     createEmployee: builder.mutation({
       query: (payload) => ({
@@ -22,6 +22,14 @@ export const EmployeeApi = apiWithTag.injectEndpoints({
         method: "GET",
       }),
     }),
+    editEmployee: builder.mutation({
+      query: (payload) => ({
+        url: "/employee",
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["EMPLOYEE_LIST"],
+    }),
     deleteEmployee: builder.mutation({
       query: (id) => ({
         url: `/employee/${id}`,
@@ -37,4 +45,5 @@ export const {
   useGetEmployeeByIdQuery,
   useCreateEmployeeMutation,
   useDeleteEmployeeMutation,
+  useEditEmployeeMutation,
 } = EmployeeApi;

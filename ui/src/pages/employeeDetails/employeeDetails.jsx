@@ -8,9 +8,10 @@ import Modal from "../../components/modal/Modal";
 import UserForm from "../../components/formElements/userForm";
 import DeleteEmployee from "./deleteEmployeeConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import { changeFilter, editEmployee } from "../../store/employeeReducer";
+import { changeFilter } from "../../store/employeeReducer";
 import {
   useDeleteEmployeeMutation,
+  useEditEmployeeMutation,
   useGetAllEmployeesQuery,
 } from "./employee.api";
 
@@ -42,7 +43,6 @@ const EmployeeDetails = () => {
     }
   }, [data]);
 
-  const employees = useSelector((state) => state.employees.employees);
   const filterStatusBy = useSelector((state) => state.employees.filterStatusBy);
 
   const [editId, setEditId] = useState(null);
@@ -53,7 +53,9 @@ const EmployeeDetails = () => {
       ? employeeData.filter((employee) => employee.status === filterStatusBy)
       : employeeData;
 
-  const [deleteEmployee, { isError, isSuccess }] = useDeleteEmployeeMutation();
+  const [deleteEmployee, deleteProperties] = useDeleteEmployeeMutation();
+
+  const [editEmployee, editProperties] = useEditEmployeeMutation();
 
   const editMode = (id) => {
     setEditId(id);
@@ -63,9 +65,24 @@ const EmployeeDetails = () => {
     setEditId(null);
   };
 
-  const saveEdit = (data) => {
-    dispatch(editEmployee(data));
-    setEditId(null);
+  const saveEdit = (editData) => {
+    editEmployee({
+      id: editId,
+      name: editData.name,
+      email: editData.email,
+      role: editData.role,
+      status: editData.status,
+      experience: Number(editData.experience),
+      joinDate: new Date(editData.joinDate).toISOString(),
+      address: {
+        line1: editData.addressLine1,
+        line2: editData.addressLine2,
+        flatOrPhoneNo: editData.flatOrPhoneNo,
+      },
+      department: {
+        name: editData.department,
+      },
+    });
   };
 
   const deleteEmployeeHandler = () => {
@@ -83,13 +100,22 @@ const EmployeeDetails = () => {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (editProperties.isSuccess) {
+      setEditId(null);
+    } else if (editProperties.isError) {
+      console.log("Error");
+      setEditId(null);
+    }
+  }, [editProperties.isSuccess, editProperties.isError]);
+
+  useEffect(() => {
+    if (deleteProperties.isSuccess) {
       setDeleteId(null);
-    } else if (isError) {
+    } else if (deleteProperties.isError) {
       console.log("Error");
       setDeleteId(null);
     }
-  }, [isSuccess, isError]);
+  }, [deleteProperties.isSuccess, deleteProperties.isError]);
 
   return (
     <>
@@ -97,7 +123,7 @@ const EmployeeDetails = () => {
         <Modal
           child={
             <UserForm
-              data={employees.find((employee) => employee.id === editId)}
+              data={employeeData.find((employee) => employee.id === editId)}
               editMode={editId !== null ? true : false}
               cancelHandler={cancelEdit}
               submitHandler={saveEdit}
