@@ -9,12 +9,12 @@ import Toast from "../../components/toast/toast";
 import { useLoginMutation } from "./login.api";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [validate, setValidate] = useState({ status: true, message: "" });
 
-  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
 
   const navigate = useNavigate();
   const [login, { isSuccess, data, isError }] = useLoginMutation();
@@ -31,15 +31,15 @@ const Login = () => {
     }
   }, [isSuccess, isError, data, navigate]);
 
-  const handleUsernameChange = (e) => {
+  const handleEmailChange = (e) => {
     if (e.target.value.length > 30)
       setValidate({
         status: false,
-        message: "Username can have max 30 characters",
+        message: "Email can have max 30 characters",
       });
     else {
       setValidate({ status: true });
-      setUsername(e.target.value);
+      setEmail(e.target.value);
     }
   };
 
@@ -63,17 +63,17 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login({ email: username, password });
+    await login({ email, password });
   };
 
   const fieldData = [
     {
-      label: "Username",
+      label: "Email",
       type: "text",
-      placeholder: "username",
-      text: username,
-      handleChange: handleUsernameChange,
-      ref: usernameRef,
+      placeholder: "johndoe@keyvalue.systems",
+      text: email,
+      handleChange: handleEmailChange,
+      ref: emailRef,
     },
     {
       label: "Password",
@@ -85,7 +85,7 @@ const Login = () => {
   ];
 
   useEffect(() => {
-    usernameRef.current.focus();
+    emailRef.current.focus();
   }, []);
 
   return (

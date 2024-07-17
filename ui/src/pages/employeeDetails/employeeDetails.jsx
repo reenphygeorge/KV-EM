@@ -29,6 +29,7 @@ const EmployeeDetails = () => {
         return {
           id: data.id,
           name: data.name,
+          email: data.email,
           joinDate: data.joinDate.split("T")[0],
           role: data.role,
           status: data.status,

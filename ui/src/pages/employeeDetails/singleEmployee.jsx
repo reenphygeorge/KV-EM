@@ -4,17 +4,19 @@ import "./singleEmployee.style.css";
 import Modal from "../../components/modal/Modal";
 import UserForm from "../../components/formElements/userForm";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { editEmployee } from "../../store/employeeReducer";
-import { useGetEmployeeByIdQuery } from "./employee.api";
+import {
+  useEditEmployeeMutation,
+  useGetEmployeeByIdQuery,
+} from "./employee.api";
 
 const SingleEmployee = () => {
   const { id } = useParams();
 
   const { data = {}, isError, isSuccess } = useGetEmployeeByIdQuery(id);
   const [employeeData, setEmployeeData] = useState({
-    id: "",
+    id,
     name: "",
+    email: "",
     joinDate: "",
     role: "",
     status: "",
@@ -30,6 +32,7 @@ const SingleEmployee = () => {
       setEmployeeData({
         id: data.id,
         name: data.name,
+        email: data.email,
         joinDate: data.joinDate.split("T")[0],
         role: data.role,
         status: data.status,
@@ -44,24 +47,50 @@ const SingleEmployee = () => {
       console.log("Error");
     }
   }, [data, isSuccess, isError]);
-  const dispatch = useDispatch();
-  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(null);
+
   const cancelEdit = () => {
-    setEditMode(false);
+    setEditId(null);
   };
 
-  const saveEdit = (data) => {
-    dispatch(editEmployee(data));
-    setEditMode(false);
+  const [editEmployee, editProperties] = useEditEmployeeMutation();
+
+  const saveEdit = (editData) => {
+    editEmployee({
+      id: Number(editId),
+      name: editData.name,
+      email: editData.email,
+      role: editData.role,
+      status: editData.status,
+      experience: Number(editData.experience),
+      joinDate: new Date(editData.joinDate).toISOString(),
+      address: {
+        line1: editData.addressLine1,
+        line2: editData.addressLine2,
+        flatOrPhoneNo: editData.flatOrPhoneNo,
+      },
+      department: {
+        name: editData.department,
+      },
+    });
   };
+
+  useEffect(() => {
+    if (editProperties.isSuccess) {
+      setEditId(null);
+    } else if (editProperties.isError) {
+      console.log("Error");
+      setEditId(null);
+    }
+  }, [editProperties.isSuccess, editProperties.isError]);
   return (
     <>
-      {editMode ? (
+      {editId !== null ? (
         <Modal
           child={
             <UserForm
               data={employeeData}
-              editMode={editMode !== null ? true : false}
+              editMode={editId !== null}
               cancelHandler={cancelEdit}
               submitHandler={saveEdit}
             />
@@ -70,13 +99,18 @@ const SingleEmployee = () => {
       ) : (
         ""
       )}
-      <main className={`details-main ${editMode ? "opacity" : ""}`}>
+      <main className={`details-main ${editId !== null ? "opacity" : ""}`}>
         <section className="details-section">
           <div className="details-wrap">
             <h1>Employee Details</h1>
             <div className="menu-wrapper">
-              <div className="edit-wrapper" onClick={() => setEditMode(true)}>
-                <button className="edit-button">
+              <div className="edit-wrapper">
+                <button
+                  className="edit-button"
+                  onClick={() => {
+                    setEditId(id);
+                  }}
+                >
                   <FaPen size="25px" />
                 </button>
                 <h4>Edit</h4>
@@ -87,6 +121,10 @@ const SingleEmployee = () => {
             <div>
               <h6>Employee Name</h6>
               <p>{employeeData.name}</p>
+            </div>
+            <div>
+              <h6>Employee Email</h6>
+              <p>{employeeData.email}</p>
             </div>
             <div>
               <h6>Joining Date</h6>

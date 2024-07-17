@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import React from "react";
 import "./button.style.css";
 
 const Button = ({
@@ -8,6 +10,7 @@ const Button = ({
 }) => (
   <button
     type={type}
+    data-testid="button-component"
     className={style === "outline" ? "outline-btn" : "normal-btn"}
     onClick={onClick ? onClick : ""}
   >

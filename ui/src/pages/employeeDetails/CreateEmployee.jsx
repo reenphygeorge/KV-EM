@@ -1,18 +1,20 @@
-import { v4 as uuidv4 } from "uuid";
 import "./createEmployee.style.css";
 import UserForm from "../../components/formElements/userForm";
 import { useNavigate } from "react-router-dom";
 import { useCreateEmployeeMutation } from "./employee.api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Toast from "../../components/toast/toast";
 
 const CreateEmployee = () => {
   const employeeData = {
     id: "",
     name: "",
+    email: "",
+    password: "",
     joinDate: new Date(Date.now()).toISOString(),
-    role: "",
-    status: "",
-    department: "",
+    role: "Probation",
+    status: "Active",
+    department: "HR",
     experience: 0,
     flatOrPhoneNo: "",
     addressLine1: "",
@@ -20,14 +22,20 @@ const CreateEmployee = () => {
   };
 
   const navigate = useNavigate();
-  const [createEmployee, { isSuccess, data, isError }] =
+  const [createEmployee, { isSuccess, data, isError, error }] =
     useCreateEmployeeMutation();
 
   const createEmployeeHandler = (data) => {
+    if (!data.joinDate) {
+      setTimeout(() => {
+        setToast({ status: false });
+      }, 2000);
+      setToast({ status: true, message: "Date must not be empty" });
+    }
     createEmployee({
       name: data.name,
-      email: `${uuidv4()}@keyvalue.system`,
-      password: "1234",
+      email: data.email,
+      password: data.password,
       role: data.role,
       status: data.status,
       experience: Number(data.experience),
@@ -43,16 +51,26 @@ const CreateEmployee = () => {
     });
   };
 
+  const [toast, setToast] = useState({ status: false, message: "" });
+
   useEffect(() => {
     if (isSuccess) {
       navigate("/employee/list");
     } else if (isError) {
-      console.log("Error");
+      let errorMessage = "Something went wrong!";
+      if (error.data.error === "Validation Error") {
+        errorMessage = error.data.errors[0];
+      }
+      setTimeout(() => {
+        setToast({ status: false });
+      }, 2000);
+      setToast({ status: true, message: errorMessage });
     }
-  }, [isSuccess, isError, data, navigate]);
+  }, [isSuccess, isError, error, data, navigate]);
 
   return (
     <main className="create-main">
+      <Toast showToast={toast.status} message={toast.message} status="fail" />
       <section className="create-section">
         <div className="create-wrap">
           <h1>Create Employee</h1>

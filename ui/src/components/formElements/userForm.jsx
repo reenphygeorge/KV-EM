@@ -47,6 +47,22 @@ const UserForm = ({
       required: true,
     },
     {
+      label: "Employee Email",
+      id: "email",
+      type: "text",
+      select: false,
+      value: employeeData.email,
+      required: true,
+    },
+    {
+      label: "Password",
+      id: "password",
+      type: "password",
+      select: false,
+      value: employeeData.password,
+      required: true,
+    },
+    {
       label: "Joining Date",
       id: "joinDate",
       type: "date",
@@ -113,7 +129,7 @@ const UserForm = ({
   ];
 
   const filteredFieldData = editMode
-    ? fieldData
+    ? fieldData.filter((data) => data.id !== "password")
     : fieldData.filter((data) => data.id !== "id");
 
   const displayData = (e) => {

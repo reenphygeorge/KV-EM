@@ -27,9 +27,11 @@ const Sidebar = () => {
   return (
     <aside>
       <nav>
-        <div className="nav-logo-wrap">
-          <img src={kvLogo} alt="key value logo" className="kv-logo" />
-        </div>
+        <Link to="/employee/list">
+          <div className="nav-logo-wrap">
+            <img src={kvLogo} alt="key value logo" className="kv-logo" />
+          </div>
+        </Link>
       </nav>
       {sidebarItems.map(({ link, title }) => (
         <div

@@ -1,4 +1,5 @@
-import { forwardRef } from "react";
+/* eslint-disable no-unused-vars */
+import React, { forwardRef } from "react";
 import "./formElements.style.css";
 
 const TextFieldComponent = (
@@ -14,9 +15,12 @@ const TextFieldComponent = (
   ref
 ) => {
   return (
-    <div className="input-wrap">
-      <label htmlFor={label}>{label}</label>
+    <div className="input-wrap" data-testid="input-wrap">
+      <label htmlFor={id} data-testid="label">
+        {label}
+      </label>
       <input
+        data-testid="input"
         ref={ref}
         value={value}
         id={id}
