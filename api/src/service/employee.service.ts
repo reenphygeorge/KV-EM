@@ -7,7 +7,7 @@ import { Role } from "../utils/role.enum";
 import JwtPayload from "../utils/jwtPayload";
 import { sign } from "jsonwebtoken";
 import Department from "../entity/department.entity";
-import { UpdateEmployeeDto } from "../dto/employee.dto";
+import { CreateEmployeeDto, UpdateEmployeeDto } from "../dto/employee.dto";
 import { DepartmentService } from "./department.service";
 import { Status } from "../utils/status.enum";
 

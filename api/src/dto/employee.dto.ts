@@ -69,41 +69,11 @@ export class LoginEmployeeDto {
   password: string;
 }
 
-export class UpdateEmployeeDto {
+export class UpdateEmployeeDto extends CreateEmployeeDto {
   @IsNumber()
   id: number;
 
-  @IsString()
+  @Exclude()
   @IsOptional()
-  name?: string;
-
-  @IsEmail()
-  @IsOptional()
-  email?: string;
-
-  @IsEnum(Role)
-  @IsOptional()
-  role?: Role;
-
-  @IsEnum(Status)
-  @IsOptional()
-  status?: Status;
-
-  @IsNumber()
-  @IsOptional()
-  experience?: number;
-
-  @IsDateString()
-  @IsOptional()
-  joinDate?: Date;
-
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => UpdateAddressDto)
-  address?: Address;
-
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => UpdateDepartmentNoIdDto)
-  department?: Department;
+  password: string;
 }

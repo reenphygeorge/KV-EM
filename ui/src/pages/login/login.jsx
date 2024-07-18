@@ -32,24 +32,23 @@ const Login = () => {
   }, [isSuccess, isError, data, navigate]);
 
   const handleEmailChange = (e) => {
-    if (e.target.value.length > 30)
+    if (!e.target.value.length)
       setValidate({
         status: false,
-        message: "Email can have max 30 characters",
+        message: "Email shouldn't be empty",
       });
     else {
       setValidate({ status: true });
-      setEmail(e.target.value);
     }
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
-    if (e.target.value.length < 6) {
+    if (e.target.value.length < 4) {
       setValidate({
         status: false,
-        message: "Password should have atleaast 6 characters",
+        message: "Password should have atleaast 4 characters",
       });
-      setPassword(e.target.value);
     } else if (e.target.value.length > 16) {
       setValidate({
         status: false,
@@ -57,8 +56,8 @@ const Login = () => {
       });
     } else {
       setValidate({ status: true });
-      setPassword(e.target.value);
     }
+    setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -70,7 +69,6 @@ const Login = () => {
     {
       label: "Email",
       type: "text",
-      placeholder: "johndoe@keyvalue.systems",
       text: email,
       handleChange: handleEmailChange,
       ref: emailRef,
@@ -78,7 +76,6 @@ const Login = () => {
     {
       label: "Password",
       type: "password",
-      placeholder: "password",
       text: password,
       handleChange: handlePasswordChange,
     },

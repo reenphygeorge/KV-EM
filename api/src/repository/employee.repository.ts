@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import Employee from "../entity/employee.entity";
-import { UpdateEmployeeDto } from "../dto/employee.dto";
 
 export default class EmployeeRepository {
   constructor(private employeeRepository: Repository<Employee>) {

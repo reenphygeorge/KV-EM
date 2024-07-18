@@ -8,6 +8,7 @@ import {
   useEditEmployeeMutation,
   useGetEmployeeByIdQuery,
 } from "./employee.api";
+import Toast from "../../components/toast/toast";
 
 const SingleEmployee = () => {
   const { id } = useParams();
@@ -54,8 +55,15 @@ const SingleEmployee = () => {
   };
 
   const [editEmployee, editProperties] = useEditEmployeeMutation();
+  const [toast, setToast] = useState({ status: false, message: "" });
 
   const saveEdit = (editData) => {
+    if (!editData.joinDate) {
+      setTimeout(() => {
+        setToast({ status: false });
+      }, 2000);
+      setToast({ status: true, message: "Date must not be empty" });
+    }
     editEmployee({
       id: Number(editId),
       name: editData.name,
@@ -79,10 +87,16 @@ const SingleEmployee = () => {
     if (editProperties.isSuccess) {
       setEditId(null);
     } else if (editProperties.isError) {
-      console.log("Error");
-      setEditId(null);
+      let errorMessage = "Something went wrong!";
+      if (editProperties.error.data.error === "Validation Error") {
+        errorMessage = editProperties.error.data.errors[0];
+      }
+      setTimeout(() => {
+        setToast({ status: false });
+      }, 2000);
+      setToast({ status: true, message: errorMessage });
     }
-  }, [editProperties.isSuccess, editProperties.isError]);
+  }, [editProperties.isSuccess, editProperties.isError, editProperties.error]);
   return (
     <>
       {editId !== null ? (
@@ -99,6 +113,7 @@ const SingleEmployee = () => {
       ) : (
         ""
       )}
+      <Toast showToast={toast.status} message={toast.message} status="fail" />
       <main className={`details-main ${editId !== null ? "opacity" : ""}`}>
         <section className="details-section">
           <div className="details-wrap">

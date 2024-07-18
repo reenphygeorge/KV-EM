@@ -26,7 +26,7 @@ export const EmployeeApi = employeeWithTag.injectEndpoints({
     editEmployee: builder.mutation({
       query: (payload) => ({
         url: "/employee",
-        method: "PATCH",
+        method: "PUT",
         body: payload,
       }),
       invalidatesTags: ["EMPLOYEE_LIST"],

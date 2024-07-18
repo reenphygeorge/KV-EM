@@ -23,7 +23,7 @@ export default class EmployeeController {
     this.router.get("/", authMiddleware, this.getAllEmployees);
     this.router.get("/:id", authMiddleware, this.getEmployeeById);
     this.router.post("/", authMiddleware, this.createEmployee);
-    this.router.patch("/", authMiddleware, this.updateEmployee);
+    this.router.put("/", authMiddleware, this.updateEmployee);
     this.router.delete("/:id", authMiddleware, this.deleteEmployee);
     this.router.post("/login", this.loginEmployee);
   }

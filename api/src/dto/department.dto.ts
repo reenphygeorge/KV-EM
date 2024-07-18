@@ -6,8 +6,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { EmployeeResponseDto } from "./employee.dto";
-import { Exclude, Type } from "class-transformer";
-import Employee from "../entity/employee.entity";
+import { Type } from "class-transformer";
 
 export class CreateDepartmentDto {
   @IsString()
